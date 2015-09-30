@@ -1,5 +1,5 @@
 source "https://supermarket.getchef.com"
-source 'https://supermarket.chef.io/universe'
+source 'http://api.berkshelf.com'
 
 cookbook 'apt'
 cookbook 'yum'
