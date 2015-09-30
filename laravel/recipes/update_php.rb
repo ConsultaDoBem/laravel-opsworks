@@ -1,8 +1,7 @@
-node[:deploy].each do |application, deploy|
-  script "storage_permissions" do
-    interpreter "bash"
+case node[:platform]
+when "rhel", "fedora", "suse", "centos", "amazon"
+  execute "update_php" do
     user "root"
-    cwd "/"
     code <<-EOH
     yum remove php*
     rpm -Uvh http://mirror.webtatic.com/yum/el6/latest.rpm
