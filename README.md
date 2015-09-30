@@ -1,39 +1,31 @@
-Laravel on OpsWorks
-===================
+opsworks-php-cookbooks
+==================================
 
-This repository contains recipes to provision and deploy OpsWorks stacks with Laravel 5+.
+AWS OpsWorks custom layer with support for PHP 5.6 and php application deployment. Also contains a centos 6.5 virtual machine using Vagrant that emulate Amazon Linux environment.
 
-You'll need to create an OpsWorks stack that uses Ubuntu 14.04 LTS, as the recipes in this repository are designed to work with that OS.
+Please make sure to read opsworks user guide before using these cookbooks http://docs.aws.amazon.com/opsworks/latest/userguide/workingcookbook-chef11-10.html
 
-## Stack configuration
+Initial Stack Setup
+=============
 
-When creating a stack, indicate that you want to use custom Chef cookbooks, with a repository type of Git and a repository URL of `https://github.com/dwightwatson/laravel-opsworks` (or your own repository URL if you decide to fork this one). You will not need an SSH key if the repository is public (like this one). The other settings for the stack you may set as you please.
+1. Add a new stack
+2. Under Advanced Settings:
+   - Pick chef version `11.10` as the chef version
+   - Use custom cookbook pointing to `https://github.com/aporat/opsworks-php-cookbooks.git` (or fork this repo and host it yourself)
+   - Enable "Manage Berkshelf" with `3.2.0` as the version
+3. Add a new `App Server -> PHP Layer` layer. Note that only Amazon Linux AMI is supported. 
+4. Edit the newly created layer, and add the custom recipes:
+  * add phpapp::setup & mysql::client in the setup lifetime event
+  * add phpapp::deploy in the deploy lifetime event
+5. Add a PHP application from the "Applications" section
 
-## PHP App Server layer configuration
 
-You'll need to add the following recipes to the PHP App Server layer so that it can operate a Laravel installation.
+Vagrant Setup
+=============
 
-### Setup
-
-In the setup stage, add the `php::mcrypt_enable` recipe. This will enable the PHP Mcrypt extension which is required by Laravel.
-
-## Deploy
-
-In the deploy stage, add the following recipes.
-
-* `laravel::environment_variables`
-This recipe will populate your `.env` file with the database configuration of your OpsWorks data store (whether it be a database instance or RDS instance). It will also take the custom environment variables from your app configuration and place them into your `.env` file.
-
-* `laravel::symlink_storage`
-This will move the `storage` directory into a shared directory so that it can be used by each release of your app. For example, if you're storing cache/sessions or other application data in the storage folder it can be used by the next release after a deployment (so it won't force your users to re-authenticate or the app to re-build the cache).
-
-* `composer::install`
-This will install Composer and then the dependencies of your application for the given release, without the development dependencies.
-
-## App configuration
-
-Select the correct data source type for your application (whether it be RDS or OpsWorks) as the credentials for that database will be passed into your application's environment. You can also add additional application environment variables, for example your `APP_KEY`.
-
-```bash
-opsworks-agent-cli get_json
-```
+1. Download Vagrant 1.6+ from http://www.vagrantup.com
+2. Download latest VirtualBox from https://www.virtualbox.org
+3. Install ChefDK ">= 0.6.0" https://downloads.getchef.com/chef-dk/mac/#/
+3. Install vagrant-omnibus `vagrant plugin install vagrant-omnibus`
+4. Install vagrant-berkshelf `vagrant plugin install vagrant-berkshelf`
+4. Create a new project with the supplied `Vagrantfile` and edit `chef.cookbooks_path` to point to the cookbooks folder
