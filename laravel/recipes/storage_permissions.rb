@@ -5,6 +5,7 @@ node[:deploy].each do |application, deploy|
     cwd "#{deploy[:deploy_to]}/current"
     code <<-EOH
     chown -R www-data:www-data app/storage
+    chown -R www-data:www-data public/documents
     EOH
   end
 end
