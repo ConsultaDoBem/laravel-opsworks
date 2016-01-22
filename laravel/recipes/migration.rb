@@ -1,5 +1,5 @@
 case node[:application]
-when "monaco"
+when "Monaco"
 
   node[:deploy].each do |application, deploy|
     script "migration" do
