@@ -1,0 +1,6 @@
+name "blog"
+maintainer "Rafael Diniz"
+maintainer_email "rafael.diniz@consultadobem.com.br"
+license "MIT"
+description "Configura RW WP folder"
+version "1.0.0"
