@@ -1,10 +1,10 @@
 node[:deploy].each do |application, deploy|
-  script "file_permissions" do
+  script "storage_permissions" do
     interpreter "bash"
     user "root"
     cwd "#{deploy[:deploy_to]}/current"
     code <<-EOH
-    chown -R apache:apache public
+    chown -R www-data:www-data app/storage
     EOH
   end
 end
