@@ -5,8 +5,9 @@ node[:deploy].each do |application, deploy|
     cwd "#{deploy[:deploy_to]}/current"
     code <<-EOH
     chown -R www-data:www-data app/storage
-    sudo find app/storage -type d -exec chmod 777 {} \;
-    sudo find app/storage -type f -exec chmod 777 {} \;
+    php artisan cache:clear
+    chmod -R 777 app/storage
+    composer dump-autoload
     EOH
   end
 end
