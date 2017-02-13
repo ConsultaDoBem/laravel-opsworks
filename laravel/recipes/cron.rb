@@ -12,13 +12,13 @@ node[:deploy].each do |application, deploy|
 */2 * * * * php /srv/www/monaco/current/artisan cdb:payer-process --env=production
 
 # Process all payments - Every 30 minutes
-*/30 * * * * php /srv/www/monaco/current/artisan cdb:billet-status --env=production
+# */30 * * * * php /srv/www/monaco/current/artisan cdb:billet-status --env=production
 
 # Process bankslip reminder - 6am every day
-0 6 * * * php /srv/www/monaco/current/artisan cdb:bankslip-reminder --env=production
+# 0 6 * * * php /srv/www/monaco/current/artisan cdb:bankslip-reminder --env=production
 
 # Process bank slips
-0 */1 * * * php /srv/www/monaco/current/artisan cdb:billet-status --env=production
+# 0 */1 * * * php /srv/www/monaco/current/artisan cdb:billet-status --env=production
 
 # Process update balance  - 2am every day
 0 2 * * * php /srv/www/monaco/current/artisan cdb:balance-process --env=production
