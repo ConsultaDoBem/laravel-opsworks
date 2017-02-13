@@ -4,7 +4,9 @@ node[:deploy].each do |application, deploy|
     user "root"
     cwd "#{deploy[:deploy_to]}/current"
     code <<-EOH
-    echo "SETANDO PERMISSOES"
+    chown -R www-data:www-data app/storage
+    find app/storage -type d -exec chmod 777 {} \;
+    find app/storage -type f -exec chmod 777 {} \;
     EOH
   end
 end
